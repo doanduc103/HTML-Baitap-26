@@ -1,0 +1,81 @@
+<!-- $0.addEventListener
+Designs partterns, Observer design pattern -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+</head>
+
+<body>
+    <input id="newItem" type="text">
+    <button id="add-btn">Add</button>
+
+    <ul id="todo-list">
+
+    </ul>
+
+    <!-- <li>take shower</li>
+<li>have a walk</li>
+<li>go to Bed</li> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var url = 'http://localhost:3000/todo';
+        axios.get(url).then(function (res) {
+            var items = res.data;
+            render(items);
+        })
+
+        var addBtn = document.getElementById('add-btn');
+        var input = document.getElementById('newItem');
+        // addBtn.onclick = additem;
+        // htmlList.innerHTML = content.join('');
+        addBtn.addEventListener('click', additem);
+        input.addEventListener('change', updateSessionStorage);
+        input.value = sessionStorage.getItem('draft');
+        //trigger an event
+        //event listener
+        // function deleteItem(index) {
+        //     toDoList.splice(index, 1);
+        //     render();
+        // }
+
+        function updateSessionStorage() {
+            sessionStorage.setItem('draft', input.value);
+        }
+
+        function additem() {
+            // get value input
+
+            var newItem = {
+                content: input.value
+            };
+            axios.post(url, newItem).then(function (item) {
+                console.log('Item saved', item);
+            });
+
+
+
+        }
+
+
+        function render(items) {
+
+            var htmlList = document.getElementById('todo-list');
+            var content = items.map(function (item) {
+                return '<li>' + item.content + '</li>'
+            });
+            htmlList.innerHTML = content.join('');
+        }
+        //  render();
+    </script>
+
+
+</body>
+
+</html>
